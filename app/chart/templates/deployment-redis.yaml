@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "diiage-finals-app.fullname" . }}-redis
+  labels:
+    {{- include "diiage-finals-app.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount.redis }}
+  selector:
+    matchLabels:
+      app: {{ include "diiage-finals-app.name" . }}-redis
+  template:
+    metadata:
+      labels:
+        app: {{ include "diiage-finals-app.name" . }}-redis
+        {{- include "diiage-finals-app.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: redis
+          image: "{{ .Values.image.redis.repository }}:{{ .Values.image.redis.tag }}"
+          imagePullPolicy: {{ .Values.image.redis.pullPolicy }}
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP

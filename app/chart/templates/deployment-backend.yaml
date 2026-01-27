@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "diiage-finals-app.fullname" . }}-backend
+  labels:
+    {{- include "diiage-finals-app.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount.backend }}
+  selector:
+    matchLabels:
+      app: {{ include "diiage-finals-app.name" . }}-backend
+  template:
+    metadata:
+      labels:
+        app: {{ include "diiage-finals-app.name" . }}-backend
+        {{- include "diiage-finals-app.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: backend
+          image: "{{ .Values.image.backend.repository }}:{{ .Values.image.backend.tag }}"
+          imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "diiage-finals-app.fullname" . }}-backend-config
+          env:
+            - name: REDIS_ADDRESS
+              value: "{{ include "diiage-finals-app.fullname" . }}-redis:6379"

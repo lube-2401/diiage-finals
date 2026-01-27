@@ -1,0 +1,26 @@
+replicaCount:
+  backend: 1
+  redis: 1
+
+image:
+  backend:
+    repository: ghcr.io/example/backend
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+  redis:
+    repository: redis
+    tag: "7.2"
+    pullPolicy: IfNotPresent
+
+service:
+  backend:
+    type: ClusterIP
+    port: 80
+  redis:
+    type: ClusterIP
+    port: 6379
+
+backend:
+  config:
+    appName: "shop-backend"
+    logLevel: "info"
