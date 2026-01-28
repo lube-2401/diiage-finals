@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traffic
+  namespace: argocd
+spec:
+  project: diiagefinals
+  source:
+    repoURL: https://github.com/lube-2401/diiage-finals
+    targetRevision: main
+    path: gitops/apps_implementation/traffic-gen-app/chart          # <─ chemin du chart Helm dans le repo
+    helm:
+      valueFiles:
+        - values.yaml        # <─ fichier de values dans app/chart
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traffic
