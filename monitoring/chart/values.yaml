@@ -2,14 +2,12 @@
 global:
   namespace: monitoring
 
-# Enable/disable components
 cert-manager:
   enabled: true
   installCRDs: true
 
 opentelemetry-operator:
   enabled: true
-  # Enable Go auto-instrumentation (required for instrumentation.opentelemetry.io/inject-go)
   manager:
     autoInstrumentation:
       go:

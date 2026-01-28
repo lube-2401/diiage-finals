@@ -13,6 +13,10 @@ Ce dépôt contient une application (backend + traffic-generator), une chart de 
 
 ## Énoncé – 5 étapes (1h réalisation + 30min debrief)
 
+NOTE: Techniquement, les parties sont indépendantes : vous pouvez les aborder dans l’ordre qui vous convient. 
+
+NOTE 2: **Il fortement est conseillé de faire un fork (ou créer votre branche) de ce repo git car vaus aurez besoin de commit vos manifestes dedans pour qu'ils soient interprétés par ArgoCD.**
+
 ### 1. Installer ArgoCD
 
 Installez ArgoCD dans le cluster à l’aide du script fourni :
@@ -21,7 +25,14 @@ Installez ArgoCD dans le cluster à l’aide du script fourni :
 ./bootstrap.sh
 ```
 
-Accédez à l’UI ArgoCD (adaptez selon votre contexte : port-forward, NodePort, Ingress…) et connectez-vous avec :
+Accédez à l’UI ArgoCD via un port-forward (ou via le NodePort):
+
+```sh
+kubectl port-forward -n argocd svc/argocd-server 8080:80
+```
+
+
+et connectez-vous avec :
 
 - **Username** : `admin`  
 - **Password** : `admin`
@@ -39,7 +50,6 @@ Déployez **toutes** les applications du dépôt via ArgoCD (GitOps) :
 Vous devez définir vous-même la manière dont ArgoCD pointera vers ce repo et vers ces charts Helm, puis laisser ArgoCD synchroniser.
 
 **Critère de succès** : à la fin de l’énoncé, vous devriez pouvoir supprimer le cluster et le recréer sans intervention manuelle (à part le bootstrap) ; le setup GitOps suffit à tout redéployer.
-
 ---
 
 ### 3. Ajouter les pièces manquantes du monitoring
@@ -54,7 +64,7 @@ Identifiez ce qui manque, ajoutez les manifests ou templates Helm adéquats, et 
 
 ### 4. Corriger les erreurs dans l’application
 
-L’application (backend et/ou traffic-generator) peut présenter des erreurs au runtime (permissions, configuration, dépendances…).
+L’application (backend et/ou traffic-generator) peut présenter des erreurs au runtime.
 
 Repérez les problèmes (logs, événements Kubernetes, endpoints qui échouent), corrigez la configuration ou le code si besoin, et validez que les apps tournent correctement.
 
