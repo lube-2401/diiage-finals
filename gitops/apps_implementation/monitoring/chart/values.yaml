@@ -153,6 +153,9 @@ tempo:
 grafana:
   enabled: true
   
+  initChownData:
+    enabled: false
+
   adminUser: admin
   adminPassword: admin
   
